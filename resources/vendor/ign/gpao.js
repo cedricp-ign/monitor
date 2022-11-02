@@ -45,7 +45,8 @@ function setNbThread(host, active) {
 function percent(num, per) {
   if(per==0)
     return 0;
-  return (Math.round((num / per) * 100));
+  //return (Math.round((num / per) * 100));
+  return (Math.round(((num / per)-0.005) * 100));
 }
 
 function jsonChanged(file) {
