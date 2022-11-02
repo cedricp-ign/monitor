@@ -11,7 +11,7 @@
           <% projects.forEach(function( project ){ %>
               <h4 class="small font-weight-bold"><a href="/project/<%= project.id_project %>"><%= project.name %><span id="topbar_project_value_<%= project.id_project %>" class="float-right">0%</span></a></h4>
               <div class="progress mb-4">
-                  <div id="topbar_project_pg_<%= project.id_project %>" class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                  <div id="topbar_project_pg_<%= project.id_project %>" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
           <% }) %>
       </div>
@@ -21,7 +21,21 @@
   <script type="text/javascript">
     $(document).ready(function() {  
       <% projects.forEach(function( project ){ %>
-        $('#topbar_project_pg_<%= project.id_project %>').attr('style', 'width: '+percent(<%= project.done %>, <%= project.total %>)+"%");
+		if (<%= project.failed %> > 0)
+		{
+			$('#topbar_project_pg_<%= project.id_project %>').attr('style', 'background-Color:#e74a3b ; width: '+percent(<%= project.done %>, <%= project.total %>)+"%");
+		}
+		else
+		{
+			if (percent(<%= project.done %>, <%= project.total %>) < 100)
+			{
+				$('#topbar_project_pg_<%= project.id_project %>').attr('style', 'background-Color:#f6c23e ; width: '+percent(<%= project.done %>, <%= project.total %>)+"%");
+			}
+			else
+			{
+				$('#topbar_project_pg_<%= project.id_project %>').attr('style', 'background-Color:#1cc88a ; width: '+percent(<%= project.done %>, <%= project.total %>)+"%");
+			}
+		}
         $('#topbar_project_value_<%= project.id_project %>').text("<%= project.done %> jobs traités sur <%= project.total %> au total, soit " + percent(<%= project.done %>, <%= project.total %>)+"%");
       <% }) %>
       <% if (projects.length==0) { %>
